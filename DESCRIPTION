@@ -16,3 +16,4 @@ Depends: R (>= 3.5.0),
 Imports: ribd
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
+BugReports: https://github.com/magnusdv/verbalisr/issues
