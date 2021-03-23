@@ -1,0 +1,58 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# verbalisr
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The purpose of **verbalisr** is to describe pedigree relationships in plain language. This is often helpful in order to understand complex genealogies. Given two members of any pedigree, **verbalisr** spells out the connecting paths between them, using common terminology like *great-grandmother* and *half first cousins*. 
+
+**verbalisr** is part of the **ped suite** framework for pedigree analysis in R.
+
+## Installation
+
+The development version of **verbalisr** can be installed from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("magnusdv/verbalisr")
+```
+## Example
+
+```{r example}
+library(verbalisr)
+```
+
+Here is an example involving a double-cousin-like relationship:
+
+```{r fig.keep = "none"}
+x = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,
+                  degree2 = 2, removal2 = 0, half2 = FALSE)
+
+plot(x, hatched = leaves(x))
+```
+
+```{r dblcous, echo = FALSE, fig.height = 3.5, fig.width = 5, out.width = "60%"}
+plot(x, hatched = leaves(x), margin = c(1,1,1,1))
+```
+
+
+To get a written description of the two youngest members, we use `verbalise()`:
+```{r}
+verbalise(x, ids = leaves(x))
+```
+
+
