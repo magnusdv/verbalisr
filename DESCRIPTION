@@ -1,0 +1,18 @@
+Package: verbalisr
+Type: Package
+Title: Describe Pedigree Relationships In Words
+Version: 0.1.0
+Authors@R: person("Magnus Dehli", "Vigeland", email = "m.d.vigeland@medisin.uio.no", 
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9134-4962"))
+Description: Describe in words the genealogical relationship between two members of 
+    a given pedigree.
+License: GPL-3
+URL: https://github.com/magnusdv/verbalisr
+Encoding: UTF-8
+Language: en-GB
+LazyData: true
+Depends: R (>= 3.5.0),
+    pedtools (>= 0.9.7)
+Imports: ribd
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
