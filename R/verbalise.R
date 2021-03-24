@@ -127,20 +127,22 @@ verbalise = function(x, ids, verbose = TRUE) {
           paths[[sps]] = setdiff(paths[[sps]], list(p1, p2))
         }
 
+        anc = if(full) c(a, sps) else a
+
         # 4b: Avuncular
         if(L1 == 1) {
-          rel = avunc2text(x, id1, id2, degree = L2, full = full) #; print(rel)
+          rel = avunc2text(x, id1, id2, degree = L2, anc = anc, full = full) #; print(rel)
           REL = c(REL, rel)
           next
         }
         if(L2 == 1) {
-          rel = avunc2text(x, id2, id1, degree = L1, full = full)#; print(rel)
+          rel = avunc2text(x, id2, id1, degree = L1, anc = anc, full = full)#; print(rel)
           REL = c(REL, rel)
           next
         }
 
         # 4c: Other
-        rel = cousins2text(L1, L2, full = full)
+        rel = cousins2text(L1, L2, anc = anc)
         REL = c(REL, rel)
         next
       }
@@ -179,7 +181,7 @@ lineal2text = function(x, top, bottom, degrees) {
   s
 }
 
-avunc2text = function(x, top, bottom, degree, full) {
+avunc2text = function(x, top, bottom, degree, anc = NULL, full) {
   if(degree < 2)
     stop2("avuncular relationship cannot have longest path length < 2")
 
@@ -204,16 +206,19 @@ avunc2text = function(x, top, bottom, degree, full) {
   s
 }
 
-cousins2text = function(deg1, deg2, full) {
+cousins2text = function(deg1, deg2, anc) { #message(deg1, deg2, anc)
   # degs are path lengths; e.g. 1st cousins have deg1 = deg2 = 2.
   deg = min(deg1, deg2) - 1
   remov = abs(deg1 - deg2)
 
   s = paste(ordinal(deg), "cousins")
-  if(!full)
-    s = paste("half", s)
+
   if(remov > 0)
     s = paste(s, numtimes(remov), "removed")
 
+  if(length(anc) == 1)
+    s = sprintf("half %s (common ancestor: %s)", s, anc)
+  else
+    s = sprintf("%s (common ancestors: %s)", s, toString(anc))
   s
 }

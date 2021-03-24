@@ -35,10 +35,10 @@ library(verbalisr)
 Here is an example involving a double-cousin-like relationship:
 
 ``` r
-x = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,
-                  degree2 = 2, removal2 = 0, half2 = FALSE)
+x = doubleCousins(degree1 = 1, removal1 = 1,
+                  degree2 = 2, removal2 = 0)
 
-plot(x, hatched = leaves(x))
+plot(x, hatched = 15:16)
 ```
 
 <img src="man/figures/README-dblcous-1.png" width="60%" />
@@ -47,7 +47,7 @@ To get a written description of the two youngest members, we use
 `verbalise()`:
 
 ``` r
-verbalise(x, ids = leaves(x))
-#> first cousins once removed
-#> half second cousins
+verbalise(x, ids = 15:16)
+#> first cousins once removed (common ancestors: 3, 4)
+#> second cousins (common ancestors: 1, 2)
 ```
