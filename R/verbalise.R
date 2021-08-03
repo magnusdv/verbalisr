@@ -29,9 +29,6 @@
 #' @importFrom ribd inbreeding kinship
 #' @export
 verbalise = function(x, ids, verbose = TRUE) {
-  if(!is.ped(x))
-    stop2("Input is not a connected ped objects")
-
   if(length(ids) != 2)
     stop2("Argument `ids` must have length 2")
 
@@ -43,6 +40,10 @@ verbalise = function(x, ids, verbose = TRUE) {
     if(verbose) cat(rel, sep = "\n")
     return(invisible(rel))
   }
+
+  # By now, if ped list, ids are from the same comp!
+  if(is.pedList(x))
+    x = x[[getComponent(x, ids[1])]]
 
   f = ribd::inbreeding(x)
 
