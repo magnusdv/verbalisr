@@ -18,5 +18,5 @@ test_that("verbalise() gives error in pedlist with duplicated labels", {
   expect_error(vrb(x, 1:2), "ID label is not unique: 1")
 
   # No error for unduplicated indivs
-  expect_match(vrb(x, 2:3), "mother")
+  expect_match(vrb(x, 2:3)[1], "mother")
 })

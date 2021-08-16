@@ -5,6 +5,9 @@ stop2 = function(...) {
   do.call(stop, a)
 }
 
+removeEmpty = function(x) {
+  x[lengths(x) > 0]
+}
 
 ordinal = function(n) {
   if(n < 0) stop2("`n` must be nonnegative")
@@ -33,8 +36,12 @@ indent = function(x, level = 0, capit = as.logical(level == 0)) {
 }
 
 # Replace duplications by prefixing "double" etc
-doublify = function(x) {
-  tab = as.list(table(x))
+#' @importFrom stats setNames
+doublify = function(x, n = NULL) {
+  if(is.null(n))
+    tab = as.list(table(x))
+  else
+    tab = setNames(as.list(n), x)
 
   y = lapply(names(tab), function(s) {
     tup = tab[[s]]
@@ -45,6 +52,7 @@ doublify = function(x) {
 
   unlist(y)
 }
+
 
 capit = function(x) {
   substr(x, 1, 1) = toupper(substr(x, 1, 1))

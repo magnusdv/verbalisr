@@ -4,16 +4,16 @@
 \alias{verbalise}
 \title{Describe a pairwise relationship}
 \usage{
-verbalise(x, ids, verbose = TRUE)
+verbalise(x, ids, verbose = interactive(), debug = FALSE)
 }
 \arguments{
 \item{x}{A \code{ped} object.}
 
-\item{ids}{A vector of length 2, containing the names of two pedigree members.}
+\item{ids}{A vector containing the names of two pedigree members.}
 
 \item{verbose}{A logical.}
 
-\item{level}{A nonnegative integer (for internal use).}
+\item{debug}{A logical, by default FALSE.}
 }
 \value{
 A character vector.
@@ -35,10 +35,16 @@ verbalise(x, 3:4)
 y = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,
                   degree2 = 2, removal2 = 0, half2 = FALSE)
 verbalise(y, leaves(y))
+
 # Example 3: Full sib mating
 
 z = fullSibMating(1)
 verbalise(z, 5:6)
 verbalise(z, c(1,5))
+
+# Example 4: Quad half first cousins
+
+w = quadHalfFirstCousins()
+verbalise(w, leaves(w))
 
 }

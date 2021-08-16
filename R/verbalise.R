@@ -1,8 +1,9 @@
 #' Describe a pairwise relationship
 #'
 #' @param x A `ped` object.
-#' @param ids A vector of length 2, containing the names of two pedigree members.
+#' @param ids A vector containing the names of two pedigree members.
 #' @param verbose A logical.
+#' @param debug A logical, by default FALSE.
 #'
 #' @return A character vector.
 #'
@@ -20,179 +21,169 @@
 #' y = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,
 #'                   degree2 = 2, removal2 = 0, half2 = FALSE)
 #' verbalise(y, leaves(y))
+#'
 #' # Example 3: Full sib mating
 #'
 #' z = fullSibMating(1)
 #' verbalise(z, 5:6)
 #' verbalise(z, c(1,5))
 #'
+#' # Example 4: Quad half first cousins
+#'
+#' w = quadHalfFirstCousins()
+#' verbalise(w, leaves(w))
+#'
 #' @importFrom ribd inbreeding kinship
 #' @export
-verbalise = function(x, ids, verbose = TRUE) {
+verbalise = function(x, ids, verbose = interactive(), debug = FALSE) {
   if(length(ids) != 2)
     stop2("Argument `ids` must have length 2")
 
   phi = ribd::kinship(x, ids)
 
-  ### Type 1: Unrelated
+  ### Unrelated
   if(phi == 0) {
-    rel = "unrelated"
-    if(verbose) cat(rel, sep = "\n")
-    return(invisible(rel))
+    REL = "Unrelated"
+    if(verbose) cat(REL, "\n")
+    return(invisible(REL))
   }
 
   # By now, if ped list, ids are from the same comp!
   if(is.pedList(x))
     x = x[[getComponent(x, ids[1])]]
 
-  f = ribd::inbreeding(x)
-
   id1 = ids[1]; id2 = ids[2]
+  SEX = getSex(x, named = TRUE)
 
-  ### Type 2: Full siblings
-  par = parents(x, id1)
-  if(length(par) == 2 && setequal(par, parents(x, id2))) {
+  # Vector of all common ancestors
+  comAnc = commonAncestors(x, ids, inclusive = TRUE)
 
-    # 2a: Parents unrelated
-    if(ribd::kinship(x, par) == 0) {
-      rel = "full siblings of unrelated parents"
-      if(verbose) cat(rel, sep = "\n")
-      return(invisible(rel))
-    }
+  # List of lists: All paths from each common ancestor
+  descPth = pedtools:::.descentPaths(x, comAnc)
+  names(descPth) = comAnc # TODO: fix i pedtools
 
-    # 2b: Parents related
-    s = "full siblings, whose parents are:"
-    parentRel = verbalise(x, par, verbose = FALSE)
-    rel = c(s, paste0("  ", parentRel))
-    if(verbose) cat(rel, sep = "\n")
-    return(invisible(rel))
-  }
-
-  ancs1 = ancestors(x, id1)
-  ancs2 = ancestors(x, id2)
-
-  ### Type 3: Lineal relationship
-  lineal = id1 %in% ancs2 || id2 %in% ancs1
-  if(lineal) {
-    top = if(id1 %in% ancs2) id1 else id2
-    bot = if(top == id1) id2 else id1
-
-    allpaths = pedtools:::.descentPaths(x, top)[[1]]
-    paths = allpaths[vapply(allpaths, function(p) bot %in% p, FUN.VALUE = FALSE)]
-    paths = unique.default(lapply(paths, function(p) p[2:match(bot, p)]))
-
-    rel = lineal2text(x, top, bot, degrees = lengths(paths))
-    if(verbose) cat(rel, sep = "\n")
-    return(invisible(rel))
-  }
-
-  ### Type 4: General
-  comAnc = commonAncestors(x, ids)
-
-  paths = lapply(pedtools:::.descentPaths(x, comAnc), function(plist) {
-    pp = lapply(plist, function(p) if(!any(ids %in% p)) NULL else p[2:max(which(p %in% ids))])
-    unique.default(pp[lengths(pp) > 0])
+  # Split into paths to each id
+  allpaths = lapply(descPth, function(plist) {
+    p1 = lapply(plist, function(p) p[seq_len(match(id1, p, nomatch = 0))])
+    p2 = lapply(plist, function(p) p[seq_len(match(id2, p, nomatch = 0))])
+    list(unique.default(removeEmpty(p1)),
+         unique.default(removeEmpty(p2)))
   })
-  names(paths) = comAnc
 
-  REL = character(0)
+  PATHDATA = list()
+
   for(a in comAnc) {
-    allp = paths[[a]]
-    allp1 = allp[vapply(allp, function(p) p[length(p)] == ids[1], FALSE)]
-    allp2 = allp[vapply(allp, function(p) p[length(p)] == ids[2], FALSE)]
+    a.to.id1 = allpaths[[a]][[1]]
+    a.to.id2 = allpaths[[a]][[2]]
 
+    for(p1 in a.to.id1) {
+      if(debug) message(paste(p1, collapse="-"))
 
-    for(p1 in allp1) {   # message(paste(c(a, p1), collapse="-"))
-      for(p2 in allp2) { # message("  ", paste(c(a, p2), collapse="-"))
+      for(p2 in a.to.id2) {
+        if(debug) message("  ", paste(p2, collapse="-"))
 
-        if(p1[1] == p2[1])
-          next
-        if(length(intersect(p1, p2)) > 0)
-          next
-
-        L1 = length(p1); L2 = length(p2)
-
-        # 4a: Half sibs
-        if(L1 == 1 && L2 == 1) {
-          sex = switch(getSex(x, a), "paternal", "maternal")
-          rel = paste(sex, "half siblings")
-          REL = c(REL, rel)
+        # If intersection: Ignore
+        if(length(intr <- intersect(p1[-1], p2[-1])) > 0) {
+          if(debug) message("  (self-intersecting: ", toString(intr), ")")
           next
         }
 
-        # Remaining types may be full of half
-        full = setequal(parents(x, p1[1]), parents(x, p2[1]))
+        deg1 = length(p1) - 1
+        deg2 = length(p2) - 1
+
+        # Lineal relationships
+        lineal = deg1 == 0 || deg2 == 0
+
+        # Non-lineal rels may be full of half
+        full = !lineal && setequal(parents(x, p1[2]), parents(x, p2[2]))
+
+        # If full, remove corresponding path via spouse
         if(full) {
-          # id of spouse
-          sps = setdiff(parents(x, p1[1]), a)
-          paths[[sps]] = setdiff(paths[[sps]], list(p1, p2))
+          spous = setdiff(parents(x, p1[2]), a)
+          allpaths[[spous]][[1]] = setdiff(allpaths[[spous]][[1]], list(c(spous, p1[-1])))
+          allpaths[[spous]][[2]] = setdiff(allpaths[[spous]][[2]], list(c(spous, p2[-1])))
         }
 
-        anc = if(full) c(a, sps) else a
+        # Shared ancestors
+        anc = if(full) c(a, spous) else a
 
-        # 4b: Avuncular
-        if(L1 == 1) {
-          rel = avunc2text(x, id1, id2, degree = L2, anc = anc, full = full) #; print(rel)
-          REL = c(REL, rel)
-          next
+        # Type
+        if(lineal) {
+          type = "lineal"
+          bottom = setdiff(ids, anc)
+          descrip = lineal2text(anc, bottom, degree = deg1 + deg2, topsex = SEX[anc])
         }
-        if(L2 == 1) {
-          rel = avunc2text(x, id2, id1, degree = L1, anc = anc, full = full)#; print(rel)
-          REL = c(REL, rel)
-          next
+        else if(deg1 == 1 && deg2 == 1) {
+          type = "siblings"
+          descrip = siblings2text(ids, full = full, parsex = SEX[anc])
+        }
+        else if(deg1 == 1 || deg2 == 1) {
+          type = "avuncular"
+          top = if(deg1 > deg2) id1 else id2
+          bottom = setdiff(ids, top)
+          descrip = avunc2text(top, bottom, degree = max(deg1, deg2), full = full, topsex = SEX[top])
+        }
+        else {
+          type = "cousins"
+          descrip = cousins2text(deg1, deg2, full = full)
         }
 
-        # 4c: Other
-        rel = cousins2text(L1, L2, anc = anc)
-        REL = c(REL, rel)
-        next
+        # Complete path string
+        ancBrack = sprintf("[%s]", paste0(anc, collapse = ","))
+        pathStr = paste0(c(rev(p1[-1]), ancBrack, p2[-1]), collapse = "-")
+
+        # Return relationship data
+        dat = list(type = type, path1 = p1, path2 = p2,
+                   deg = c(deg1, deg2), anc = anc, pathStr = pathStr, descrip = descrip)
+        PATHDATA = c(PATHDATA, list(dat))
       }
     }
   }
 
-  REL = doublify(REL)
+  # Sort
+  PATHDATA = PATHDATA[order(sapply(PATHDATA, function(dat) sum(dat$deg)))]
 
-  if(verbose) cat(REL, sep = "\n")
-  return(invisible(REL))
+  # Doublify
+  descrips = sapply(PATHDATA, function(dat) dat$descrip)
+  uniqDesc = unique.default(descrips)
+  summary = lapply(uniqDesc, function(dsc)
+    sapply(PATHDATA[descrips == dsc], function(dat) dat$pathStr))
+  names(summary) = doublify(uniqDesc, n = lengths(summary))
+
+  # Parse
+  REL = completeText(summary)
+  if(verbose)
+    cat(REL, sep = "\n")
+
+  invisible(REL)
 }
 
-lineal2text = function(x, top, bottom, degrees) {
-  degrees = sort(degrees)
 
-  grand = sapply(degrees, function(d) {
-    greats = if(d > 2) strrep("great-", d - 2) else ""
-    if(d > 1) paste0(greats, "grand") else ""
-  })
 
-  topname = switch(getSex(x, top), "father", "mother")
+lineal2text = function(top, bottom, degree, topsex) {
+  greats = if(degree > 2) strrep("great-", degree - 2) else ""
+  grand  = if(degree > 1) paste0(greats, "grand") else ""
+  determ = if(degree == 1) "the" else "a"
+
+  topname = switch(topsex, "father", "mother")
   rel = paste0(grand, topname)
-  rel = doublify(rel)
 
-  determ = sapply(rel, function(r) if(r %in% c("mother", "father")) "the" else "a")
-
-  s2 = sprintf("%s is %s %s of %s", top, determ, rel, bottom)
-
-  if(length(degrees) == 1) {
-    s = paste("direct descendence:", s2)
-  }
-  else {
-    s = c("direct descendence, multiple lines:", paste0("  ", s2))
-  }
-
-  s
+  sprintf("lineal of degree %d: %s is %s %s of %s", degree, top, determ, rel, bottom)
 }
 
-avunc2text = function(x, top, bottom, degree, anc = NULL, full) {
-  if(degree < 2)
-    stop2("avuncular relationship cannot have longest path length < 2")
+siblings2text = function(ids, full, parsex) {
+  if(full) "full siblings"
+  else sprintf("half siblings, %s", switch(parsex, "paternal", "maternal"))
+}
 
-  type = switch(getSex(x, top), "uncle", "aunt")
+avunc2text = function(top, bottom, degree, full, topsex) {
+  type = switch(topsex, "uncle", "aunt")
 
   if(degree == 2) {
     if(full)
-      s = sprintf("avuncular (%s is an %s of %s)", top, type, bottom)
+      s = sprintf("avuncular: %s is an %s of %s", top, type, bottom)
     else
-      s = sprintf("half-avuncular (%s is a half-%s of %s)", top, type, bottom)
+      s = sprintf("half-avuncular: %s is a half-%s of %s", top, type, bottom)
     return(s)
   }
 
@@ -200,26 +191,35 @@ avunc2text = function(x, top, bottom, degree, anc = NULL, full) {
   grand = paste0(greats, "grand")
 
   if(full)
-    s = sprintf("%s-avuncular (%s is a %s%s of %s)", grand, top, grand, type, bottom)
+    s = sprintf("%s-avuncular: %s is a %s%s of %s", grand, top, grand, type, bottom)
   else
-    s = sprintf("half %s-avuncular (%s is a half %s%s of %s)", grand, top, grand, type, bottom)
+    s = sprintf("half %s-avuncular: %s is a half %s%s of %s", grand, top, grand, type, bottom)
 
   s
 }
 
-cousins2text = function(deg1, deg2, anc) { #message(deg1, deg2, anc)
-  # degs are path lengths; e.g. 1st cousins have deg1 = deg2 = 2.
+
+cousins2text = function(deg1, deg2, full) {
   deg = min(deg1, deg2) - 1
   remov = abs(deg1 - deg2)
 
+  # Build string
   s = paste(ordinal(deg), "cousins")
-
   if(remov > 0)
     s = paste(s, numtimes(remov), "removed")
-
-  if(length(anc) == 1)
-    s = sprintf("half %s (common ancestor: %s)", s, anc)
-  else
-    s = sprintf("%s (common ancestors: %s)", s, toString(anc))
+  if(!full)
+    s = paste("half", s)
   s
 }
+
+
+
+completeText = function(x) {
+  lines = lapply(names(x), function(s) {
+    pths = x[[s]]
+    c(paste("*", s), paste("   ", pths))
+  })
+
+  unlist(lines)
+}
+
