@@ -19,7 +19,8 @@ verbalise(x, ids, verbose = interactive(), debug = FALSE)
 A character vector.
 }
 \description{
-Describe a pairwise relationship
+The description includes all pedigree paths between the two individuals,
+indicating with brackets the topmost common ancestors in each path.
 }
 \examples{
 

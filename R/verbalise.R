@@ -1,5 +1,8 @@
 #' Describe a pairwise relationship
 #'
+#' The description includes all pedigree paths between the two individuals,
+#' indicating with brackets the topmost common ancestors in each path.
+#'
 #' @param x A `ped` object.
 #' @param ids A vector containing the names of two pedigree members.
 #' @param verbose A logical.
