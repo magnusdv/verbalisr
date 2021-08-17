@@ -124,7 +124,7 @@ verbalise = function(x, ids, verbose = interactive(), debug = FALSE) {
         }
         else if(deg1 == 1 || deg2 == 1) {
           type = "avuncular"
-          top = if(deg1 > deg2) id1 else id2
+          top = if(deg1 == 1) id1 else id2
           bottom = setdiff(ids, top)
           descrip = avunc2text(top, bottom, degree = max(deg1, deg2), full = full, topsex = SEX[top])
         }
