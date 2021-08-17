@@ -12,13 +12,16 @@ genealogies. Given two members of any pedigree, **verbalisr** spells out
 the connecting paths between them, using common terminology like
 *great-grandmother* and *half first cousins*.
 
-**verbalisr** is part of the **ped suite** framework for pedigree
-analysis in R.
+**verbalisr** is part of the [ped
+suite](https://magnusdv.github.io/pedsuite/) framework for pedigree
+analysis in R. A good place to experiment with **verbalisr** is the
+online app **QuickPed** for building and analysing pedigrees. Try
+QuickPed here: <https://magnusdv.shinyapps.io/quickped>.
 
 ## Installation
 
-The development version of **verbalisr** can be installed from
-[GitHub](https://github.com/) with:
+The development version of **verbalisr** can be installed from GitHub
+with:
 
 ``` r
 # install.packages("devtools")
@@ -35,19 +38,27 @@ library(verbalisr)
 Here is an example involving a double-cousin-like relationship:
 
 ``` r
-x = doubleCousins(degree1 = 1, removal1 = 1,
+x = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,
                   degree2 = 2, removal2 = 0)
 
-plot(x, hatched = 15:16)
+plot(x, hatched = 16:17)
 ```
 
 <img src="man/figures/README-dblcous-1.png" width="60%" />
 
-To get a written description of the two youngest members, we use
-`verbalise()`:
+We apply `verbalise()` to describe the relationship between the
+children:
 
 ``` r
-verbalise(x, ids = 15:16)
-#> first cousins once removed (common ancestors: 3, 4)
-#> second cousins (common ancestors: 1, 2)
+verbalise(x, ids = 16:17)
+#> Half first cousins once removed
+#>    16-10-[4]-12-15-17
+#> Second cousins
+#>    16-13-6-[1,2]-8-14-17
 ```
+
+This output shows that 16 and 17 are simultaneous first cousins once
+removed and second cousins. Below each description follows the
+corresponding path, with its oldest shared ancestor(s) indicated in
+brackets. Paths with two ancestors on top contribute *full*
+relationships, otherwise the contribution is a *half* relationship.
