@@ -4,7 +4,7 @@
 \alias{verbalise}
 \title{Describe a pairwise relationship}
 \usage{
-verbalise(x, ids, verbose = interactive(), debug = FALSE)
+verbalise(x, ids, verbose = TRUE, debug = FALSE)
 }
 \arguments{
 \item{x}{A \code{ped} object.}

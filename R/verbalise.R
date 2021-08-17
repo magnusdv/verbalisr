@@ -38,13 +38,13 @@
 #'
 #' @importFrom ribd inbreeding kinship
 #' @export
-verbalise = function(x, ids, verbose = interactive(), debug = FALSE) {
+verbalise = function(x, ids, verbose = TRUE, debug = FALSE) {
   if(length(ids) != 2)
     stop2("Argument `ids` must have length 2")
   if(ids[1] == ids[2])
     stop2("Duplicated ID label: ", ids[1])
 
-  phi = ribd::kinship(x, ids)
+  phi = kinship(x, ids)
 
   ### Unrelated
   if(phi == 0) {
