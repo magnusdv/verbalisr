@@ -222,7 +222,7 @@ cousins2text = function(deg1, deg2, full) {
 completeText = function(x) {
   lines = lapply(names(x), function(s) {
     pths = x[[s]]
-    c(paste("*", capit(s)), paste("   ", pths))
+    c(capit(s), paste("  ", pths))
   })
 
   unlist(lines)
