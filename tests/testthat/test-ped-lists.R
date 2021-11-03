@@ -1,6 +1,7 @@
 
 vrb = function(...) verbalise(..., verbose = FALSE)
 
+skip("Wait for next ribd version")
 test_that("verbalise() works in a simple ped list", {
   nuc = nuclearPed()
   x = list(nuc, singleton(4))
@@ -12,7 +13,7 @@ test_that("verbalise() works in a simple ped list", {
 
 })
 
-
+skip("Wait for ribd 1.4")
 test_that("verbalise() gives error in pedlist with duplicated labels", {
   x = list(nuclearPed(), singleton())
   expect_error(vrb(x, 1:2), "ID label is not unique: 1")
