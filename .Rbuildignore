@@ -2,3 +2,7 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^Rprof.out$
+^cran-comments\.md$
+^CRAN-RELEASE$
+^revdep$
+
