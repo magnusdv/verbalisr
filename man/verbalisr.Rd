@@ -6,5 +6,6 @@
 \title{verbalisr: Describe pedigree relationships in words}
 \description{
 Describe the genealogical relationship between two members of a given
-pedigree.
+pedigree. verbalisr is part of the \emph{ped suite} collection of packages for
+pedigree analysis.
 }
