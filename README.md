@@ -4,6 +4,9 @@
 # verbalisr
 
 <!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/verbalisr)](https://CRAN.R-project.org/package=verbalisr)
 <!-- badges: end -->
 
 The purpose of **verbalisr** is to describe pedigree relationships in
@@ -38,8 +41,8 @@ library(verbalisr)
 Here is an example involving a double-cousin-like relationship:
 
 ``` r
-x = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,
-                  degree2 = 2, removal2 = 0)
+x = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,  # half first cousins once removed
+                  degree2 = 2, removal2 = 0)                # second cousins
 
 plot(x, hatched = 16:17)
 ```
