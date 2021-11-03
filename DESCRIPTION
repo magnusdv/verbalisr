@@ -1,6 +1,6 @@
 Type: Package
 Package: verbalisr
-Title: Describe Pedigree Relationships In Words
+Title: Describe Pedigree Relationships in Words
 Version: 0.2.0
 Authors@R: 
     person(given = "Magnus Dehli",
