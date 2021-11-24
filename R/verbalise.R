@@ -164,7 +164,6 @@ verbalise = function(x, ids, verbose = TRUE, debug = FALSE) {
 }
 
 
-
 lineal2text = function(top, bottom, degree, topsex) {
   greats = if(degree > 2) strrep("great-", degree - 2) else ""
   grand  = if(degree > 1) paste0(greats, "grand") else ""
