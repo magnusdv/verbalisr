@@ -5,6 +5,26 @@ stop2 = function(...) {
   do.call(stop, a)
 }
 
+checkIds = function(x, ids, checkDups = TRUE, exactly = NULL, atleast = NULL, atmost = NULL) {
+  if(is.character(x))
+    labs = x
+  else
+    labs = unlist(labels(x), use.names = FALSE)
+
+  if(!all(ids %in% labs))
+    stop2("Unknown ID label: ", setdiff(ids, labs))
+  if(!is.null(exactly) && length(ids) != exactly)
+    stop2("Argument `ids` must have length ", exactly)
+  if(!is.null(atleast) && length(ids) < atleast)
+    stop2("Argument `ids` must have length at least ", atleast)
+  if(!is.null(atmost) && length(ids) > atmost)
+    stop2("Argument `ids` must have length at most ", atmost)
+  if(checkDups && (d <- anyDuplicated(match(labs, ids), incomparables = NA)))
+    stop2("ID label is not unique: ", labs[d])
+  if(checkDups && anyDuplicated(ids))
+    stop2("Repeated individual: ", ids[duplicated(ids)])
+}
+
 removeEmpty = function(x) {
   x[lengths(x) > 0]
 }
@@ -57,4 +77,8 @@ doublify = function(x, n = NULL) {
 capit = function(x) {
   substr(x, 1, 1) = toupper(substr(x, 1, 1))
   x
+}
+
+isFull = function(path) {
+  isTRUE(path$full)
 }
