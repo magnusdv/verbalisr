@@ -47,7 +47,8 @@ pathData = function(x, p1, p2, inb = NULL) {
   ng = if(removal > 1) removal - 1 else 0
 
   # Inbreeding of ancs
-  if(is.null(inb)) inb = ribd::inbreeding(x)
+  if(is.null(inb))
+    inb = ribd::inbreeding(x)
   ancInb = inb[anc]
 
   # Sexes along path from A to B (not inclusive). Include anc only for half rels.
@@ -70,7 +71,7 @@ pathData = function(x, p1, p2, inb = NULL) {
            typ = switch(sex[top], "father", "mother")
            if(ng > 0)
              typ = paste0(strrep("great-", ng - 1), "grand", typ)
-           determ = if(ng > 1) "a" else "the"
+           determ = if(ng > 0) "a" else "the"
            details = sprintf("%s is %s %s of %s", top, determ, typ, bottom)
          },
          sibling = {
@@ -79,7 +80,7 @@ pathData = function(x, p1, p2, inb = NULL) {
          },
          avuncular = {
            code = paste0(if(half) "h", if(ng > 0) "g", if(ng > 1) ng, "av")
-           rel = paste0(if(half) "half ",
+           rel = paste0(if(half) "half-",
                         if(ng > 1) strrep("great-", ng - 1),
                         if(ng > 0) "grand-",
                         "avuncular")
@@ -106,16 +107,17 @@ pathData = function(x, p1, p2, inb = NULL) {
   ancBrack = sprintf("[%s]", paste0(anc, collapse = ","))
   path = paste0(c(rev(v1), ancBrack, v2), collapse = "-")
 
-  structure(list(v1 = v1, v2 = v2, leaves = leaves, anc = anc, full = full,
-                 nSteps = nSteps, degree = degree, removal = removal,
-                 ancInb = ancInb, sex = sex, sexPath = sexPath, path = path,
-                 code = code, type = type, rel = rel, details = details),
-            class = "pathData")
+  list(v1 = v1, v2 = v2, leaves = leaves, anc = anc, full = full,
+       nSteps = nSteps, degree = degree, removal = removal,
+       ancInb = ancInb, sex = sex, sexPath = sexPath, path = path,
+               code = code, type = type, rel = rel, details = details)
 }
 
-
-
-format.pathData = function(x, details = TRUE, ...) {
-  switch(x$type,
-         lineal = )
+unrelatedPair = function(x, ids) {
+  sex = getSex(x, ids = ids, named = TRUE)
+  emptypath = list(v1 = ids[1], v2 = ids[2], leaves = ids, anc = character(0), full = NA,
+                   nSteps = c(Inf, Inf), degree = Inf, removal = 0,
+                   ancInb = 0, sex = sex, sexPath = "", path = "",
+                   code = "un", type = "unrelated", rel = "unrelated", details = NULL)
+  structure(list(emptypath), class = "pairrel")
 }
