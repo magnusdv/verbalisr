@@ -18,9 +18,20 @@ format.pairrel = function(x, ...) {
   completeText(paths)
 }
 
+
 #' @export
 print.pairrel = function(x, ...) {
   txt = format(x)
   cat(txt, sep = "\n")
   invisible(x)
+}
+
+
+completeText = function(x) {
+  lines = lapply(names(x), function(s) {
+    pths = x[[s]]
+    c(capit(s), paste("  ", pths))
+  })
+
+  unlist(lines)
 }

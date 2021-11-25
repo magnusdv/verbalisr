@@ -4,7 +4,7 @@
 \alias{verbalise}
 \title{Describe a pairwise relationship}
 \usage{
-verbalise(x, ids, verbose = TRUE, debug = FALSE)
+verbalise(x, ids, verbose = TRUE)
 }
 \arguments{
 \item{x}{A \code{ped} object.}
@@ -12,11 +12,10 @@ verbalise(x, ids, verbose = TRUE, debug = FALSE)
 \item{ids}{A vector containing the names of two pedigree members.}
 
 \item{verbose}{A logical.}
-
-\item{debug}{A logical, by default FALSE.}
 }
 \value{
-A character vector.
+An object of class \code{pairrel}, which is essentially a list of lists,
+where each inner list describes a single path.
 }
 \description{
 The description includes all pedigree paths between the two individuals,
