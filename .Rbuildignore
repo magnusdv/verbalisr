@@ -6,3 +6,4 @@
 ^CRAN-RELEASE$
 ^revdep$
 
+^data-raw$
