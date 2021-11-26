@@ -98,7 +98,8 @@ verbalise = function(x, ids, verbose = TRUE) {
 
   # Sort
   PATHS = PATHS[order(sapply(PATHS, function(p) p$degree),
-                      sapply(PATHS, function(p) sum(p$nSteps)))]
+                      sapply(PATHS, function(p) sum(p$nSteps)),
+                      sapply(PATHS, function(p) -p$removal))]
   class(PATHS) = "pairrel"
 
   if(verbose)
