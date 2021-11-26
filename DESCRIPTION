@@ -18,7 +18,7 @@ Depends:
     pedtools (>= 0.9.7),
     R (>= 3.5.0)
 Imports: 
-    ribd
+    ribd (>= 1.3.1)
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
