@@ -3,11 +3,11 @@
 #' The description includes all pedigree paths between the two individuals,
 #' indicating with brackets the topmost common ancestors in each path.
 #'
-#' @param x A `ped` object.
+#' @param x A `ped` object, or a list of such.
 #' @param ids A vector containing the names of two pedigree members.
 #' @param verbose A logical.
 #'
-#' @return An object of class `pairrel`, which is essentially a list of lists,
+#' @return An object of class `pairrel`. This is essentially a list of lists,
 #'   where each inner list describes a single path.
 #'
 #' @examples

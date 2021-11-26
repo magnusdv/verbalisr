@@ -7,14 +7,14 @@
 verbalise(x, ids, verbose = TRUE)
 }
 \arguments{
-\item{x}{A \code{ped} object.}
+\item{x}{A \code{ped} object, or a list of such.}
 
 \item{ids}{A vector containing the names of two pedigree members.}
 
 \item{verbose}{A logical.}
 }
 \value{
-An object of class \code{pairrel}, which is essentially a list of lists,
+An object of class \code{pairrel}. This is essentially a list of lists,
 where each inner list describes a single path.
 }
 \description{
