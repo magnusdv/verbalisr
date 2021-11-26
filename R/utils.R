@@ -19,10 +19,10 @@ checkIds = function(x, ids, checkDups = TRUE, exactly = NULL, atleast = NULL, at
     stop2("Argument `ids` must have length at least ", atleast)
   if(!is.null(atmost) && length(ids) > atmost)
     stop2("Argument `ids` must have length at most ", atmost)
-  if(checkDups && (d <- anyDuplicated(match(labs, ids), incomparables = NA)))
+  if(checkDups && (d <- anyDuplicated.default(match(labs, ids), incomparables = NA)))
     stop2("ID label is not unique: ", labs[d])
-  if(checkDups && anyDuplicated(ids))
-    stop2("Repeated individual: ", ids[duplicated(ids)])
+  if(checkDups && (d <- anyDuplicated.default(ids)))
+    stop2("Repeated individual: ", ids[d])
 }
 
 removeEmpty = function(x) {
