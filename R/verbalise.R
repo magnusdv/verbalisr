@@ -5,7 +5,6 @@
 #'
 #' @param x A `ped` object, or a list of such.
 #' @param ids A vector containing the names of two pedigree members.
-#' @param verbose A logical (deprecated).
 #'
 #' @return An object of class `pairrel`. This is essentially a list of lists,
 #'   where each inner list describes a single path.
@@ -23,22 +22,22 @@
 #'
 #' y = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,
 #'                   degree2 = 2, removal2 = 0, half2 = FALSE)
-#' verbalise(y, leaves(y))
+#' verbalise(y)
 #'
 #' # Example 3: Full sib mating
 #'
 #' z = fullSibMating(1)
-#' verbalise(z, 5:6)
-#' verbalise(z, c(1,5))
+#' verbalise(z)
+#' verbalise(z, ids = c(1,5))
 #'
 #' # Example 4: Quad half first cousins
 #'
 #' w = quadHalfFirstCousins()
-#' verbalise(w, leaves(w))
+#' verbalise(w)
 #'
 #' @importFrom ribd kinship
 #' @export
-verbalise = function(x, ids, verbose = TRUE) {
+verbalise = function(x, ids = leaves(x)) {
   ids = as.character(ids)
   checkIds(x, ids, exactly = 2)
 
