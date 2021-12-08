@@ -5,7 +5,7 @@
 #'
 #' @param x A `ped` object, or a list of such.
 #' @param ids A vector containing the names of two pedigree members.
-#' @param verbose A logical.
+#' @param verbose A logical (deprecated).
 #'
 #' @return An object of class `pairrel`. This is essentially a list of lists,
 #'   where each inner list describes a single path.
@@ -99,11 +99,7 @@ verbalise = function(x, ids, verbose = TRUE) {
   PATHS = PATHS[order(sapply(PATHS, function(p) p$degree),
                       sapply(PATHS, function(p) sum(p$nSteps)),
                       sapply(PATHS, function(p) -p$removal))]
-  class(PATHS) = "pairrel"
 
-  if(verbose)
-    print(PATHS)
-
-  invisible(PATHS)
+  structure(PATHS, class = "pairrel")
 }
 

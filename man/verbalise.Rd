@@ -11,7 +11,7 @@ verbalise(x, ids, verbose = TRUE)
 
 \item{ids}{A vector containing the names of two pedigree members.}
 
-\item{verbose}{A logical.}
+\item{verbose}{A logical (deprecated).}
 }
 \value{
 An object of class \code{pairrel}. This is essentially a list of lists,

@@ -1,5 +1,5 @@
 
-vrb = function(...) format(verbalise(..., verbose = FALSE))
+vrb = function(...) format(verbalise(...))
 
 test_that("verbalise() works in a simple ped list", {
   nuc = nuclearPed()

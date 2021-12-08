@@ -13,6 +13,6 @@ wright = function(x) {
 
 
 validateKinship = function(x, ids) {
-  v = verbalise(x, ids, verbose = FALSE)
+  v = verbalise(x, ids)
   if(!all.equal(wright(v), kinship(x, ids))) stop("err")
 }
