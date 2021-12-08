@@ -3,7 +3,6 @@
 ^README\.Rmd$
 ^Rprof.out$
 ^cran-comments\.md$
-^CRAN-RELEASE$
+^CRAN-SUBMISSION$
 ^revdep$
-
 ^data-raw$
