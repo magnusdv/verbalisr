@@ -61,8 +61,7 @@ verbalise = function(x, ids, verbose = TRUE) {
   comAnc = commonAncestors(x, ids, inclusive = TRUE)
 
   # List of lists: All paths from each common ancestor
-  descPth = pedtools:::.descentPaths(x, comAnc)
-  names(descPth) = comAnc # TODO: fix i pedtools
+  descPth = descentPaths(x, comAnc)
 
   # Split into paths to each id
   allpaths = lapply(descPth, function(plist) {
