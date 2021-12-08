@@ -34,7 +34,7 @@ To get the current official version of **verbalisr**, install from CRAN as follo
 ```{r, eval = FALSE}
 install.packages("verbalisr")
 ```
-Alternatively, the development version can be installed from GitHub with:
+Alternatively, the development version can be installed from GitHub:
 ```{r, eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("magnusdv/verbalisr")
@@ -63,7 +63,7 @@ We apply `verbalise()` to describe the relationship between the children:
 ```{r}
 verbalise(x, ids = 16:17)
 ```
-This output shows that 16 and 17 are simultaneous first cousins once removed and second cousins. Below each description follows the corresponding path, with its oldest shared ancestor(s) indicated in brackets. Paths with two ancestors on top contribute *full* relationships, otherwise the contribution is a *half* relationship.
+This output shows that 16 and 17 are simultaneous first cousins once removed and second cousins. Below each description follows the corresponding path, with its top-most shared ancestor(s) indicated in brackets. The first path has one ancestor on top, `[4]`, indicating a *half* relationship, while the second has two ancestors on top, `[1,2]`, contributing a *full* relationship.
 
 ## A bigger example: The royal Habsburg family
 The figure below shows a subset of the (infamously inbred) royal Habsburg family, contained in the built-in dataset `habsburg`.
@@ -73,13 +73,24 @@ Untangling all the loops in this pedigree *by hand* would be a daunting task, ma
 plot(habsburg, hatched = "Charles II", cex = 0.6, margin = c(1, 1, .1, 1))
 ```
 
-The inbreeding coefficient of King Charles II of Spain (the bottom individual) was close to 25%, i.e., similar to a child produced by brother-sister incest. We can check this with the help of **ribd**:
+The inbreeding coefficient of King Charles II of Spain (the bottom individual) has been estimated to be around 25%, i.e., similar to a child produced by brother-sister incest. We can validate this with the **ribd** package, which provides the function `inbreeding()`:
 ```{r}
 ribd::inbreeding(habsburg, "Charles II")
 ```
+(The answer is a bit less than 25% since we are only looking at a subset of the historic family tree.)
 
 The high inbreeding coefficient shows that the parents of Charles II were closely related. But *how* were they related? **verbalisr** gives the answer:
+
 ```{r}
 verbalise(habsburg, ids = c("Philip IV", "Mariana"))
 ```
 
+## Controlling the output
+The output of `verbalise()` is actually a detailed list containing various data about each pedigree path. When the output is printed to the screen, however, a special `print` method is called, which formats the data into reader-friendly statements.
+
+The print method accepts two arguments, `cap` and `includePaths`, which can be used to control the output. Setting `cap` to FALSE results in all-lowercase output, instead of the default first-letter capitalisation. If `includePaths` is set to FALSE, the detailed paths are skipped:
+```{r}
+v = verbalise(habsburg, ids = c("Philip IV", "Mariana"))
+
+print(v, cap = FALSE, includePaths = FALSE)
+```
