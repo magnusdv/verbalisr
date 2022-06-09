@@ -1,7 +1,7 @@
 Type: Package
 Package: verbalisr
 Title: Describe Pedigree Relationships in Words
-Version: 0.4.0
+Version: 0.4.0.9000
 Authors@R: 
     person("Magnus Dehli", "Vigeland", , "m.d.vigeland@medisin.uio.no", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-9134-4962"))
@@ -25,5 +25,5 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 LazyData: true
