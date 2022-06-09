@@ -65,8 +65,10 @@ doublify = function(x, n = NULL) {
 
   y = lapply(names(tab), function(s) {
     tup = tab[[s]]
-    if(tup > 1)
-      paste(tuple(tup), s)
+    if(tup > 1) {
+      DB = tuple(tup)
+      paste(DB, sub("(: .* is a)n?", paste("\\1", DB), s))
+    }
     else s
   })
 
