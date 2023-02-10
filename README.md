@@ -21,6 +21,11 @@ To see **verbalisr** in action, check out the interactive app
 **QuickPed** for building and analysing pedigrees, available online
 here: <https://magnusdv.shinyapps.io/quickped>.
 
+The algorithm behind **verbalisr** is described in detail in the BMC
+Bioinformatics paper: [QuickPed: an online tool for drawing pedigrees
+and analysing relatedness](https://doi.org/10.1186/s12859-022-04759-y)
+(Vigeland, 2022).
+
 The **verbalisr** package is part of the [ped
 suite](https://magnusdv.github.io/pedsuite/) framework for pedigree
 analysis in R.
@@ -54,10 +59,10 @@ Here is an example involving a double-cousin-like relationship:
 x = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,  # half first cousins once removed
                   degree2 = 2, removal2 = 0)                # second cousins
 
-plot(x, hatched = 16:17)
+plot(x, hatched = leaves(x))
 ```
 
-<img src="man/figures/README-dblcous-1.png" width="60%" style="display: block; margin: auto;" />
+<img src="man/figures/README-dblcous-1.png" width="65%" style="display: block; margin: auto;" />
 
 We apply `verbalise()` to describe the relationship between the
 children:
@@ -85,10 +90,10 @@ Untangling all the loops in this pedigree *by hand* would be a daunting
 task, making it a good test case for **verbalisr**.
 
 ``` r
-plot(habsburg, hatched = "Charles II", cex = 0.6, margin = c(1, 1, .1, 1))
+plot(habsburg, hatched = "Charles II", cex = 0.6)
 ```
 
-<img src="man/figures/README-habsburg-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="man/figures/README-habsburg-1.png" width="85%" style="display: block; margin: auto;" />
 
 The inbreeding coefficient of King Charles II of Spain (the bottom
 individual) has been estimated to be around 25%, i.e., similar to a

@@ -26,6 +26,8 @@ The purpose of **verbalisr** is to describe pedigree relationships in plain lang
 
 To see **verbalisr** in action, check out the interactive app **QuickPed** for building and analysing pedigrees, available online here: <https://magnusdv.shinyapps.io/quickped>.
 
+The algorithm behind **verbalisr** is described in detail in the BMC Bioinformatics paper: [QuickPed: an online tool for drawing pedigrees and analysing relatedness](https://doi.org/10.1186/s12859-022-04759-y) (Vigeland, 2022).
+
 The **verbalisr** package is part of the [ped suite](https://magnusdv.github.io/pedsuite/) framework for pedigree analysis in R. 
 
 ## Installation
@@ -48,15 +50,11 @@ library(verbalisr)
 
 Here is an example involving a double-cousin-like relationship:
 
-```{r fig.keep = "none"}
+```{r dblcous, fig.height = 3.7, fig.width = 5.5, out.width = "65%"}
 x = doubleCousins(degree1 = 1, removal1 = 1, half1 = TRUE,  # half first cousins once removed
                   degree2 = 2, removal2 = 0)                # second cousins
 
-plot(x, hatched = 16:17)
-```
-
-```{r dblcous, echo = FALSE, fig.height = 3.7, fig.width = 5.5, out.width = "60%"}
-plot(x, hatched = leaves(x), margin = c(1,1,1,1))
+plot(x, hatched = leaves(x))
 ```
 
 We apply `verbalise()` to describe the relationship between the children:
@@ -69,8 +67,8 @@ This output shows that 16 and 17 are simultaneous first cousins once removed and
 The figure below shows a subset of the (infamously inbred) royal Habsburg family, contained in the built-in dataset `habsburg`.
 Untangling all the loops in this pedigree *by hand* would be a daunting task, making it a good test case for **verbalisr**.
 
-```{r habsburg, fig.width=6, fig.height = 4.5, dpi = 600, out.width = "80%"}
-plot(habsburg, hatched = "Charles II", cex = 0.6, margin = c(1, 1, .1, 1))
+```{r habsburg, fig.width = 6, fig.height = 4.4, dpi = 600, out.width = "85%"}
+plot(habsburg, hatched = "Charles II", cex = 0.6)
 ```
 
 The inbreeding coefficient of King Charles II of Spain (the bottom individual) has been estimated to be around 25%, i.e., similar to a child produced by brother-sister incest. We can validate this with the **ribd** package, which provides the function `inbreeding()`:
