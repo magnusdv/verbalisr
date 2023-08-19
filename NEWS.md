@@ -1,3 +1,12 @@
+# verbalisr 0.5.1
+
+* Added CITATION file.
+
+* Updated package doc, fixing CRAN complaint.
+
+* Require pedtools 2.2.0 and ribd 1.5.0
+
+
 # verbalisr 0.5.0
 
 This is a maintenance release with only minor changes.
