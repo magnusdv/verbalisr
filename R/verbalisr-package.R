@@ -1,11 +1,7 @@
-#' verbalisr: Describe pedigree relationships in words
-#'
-#' Describe the genealogical relationship between two members of a given
-#' pedigree. verbalisr is part of the *ped suite* collection of packages for
-#' pedigree analysis.
-#'
-#' @docType package
+#' @keywords internal
+"_PACKAGE"
+
+## usethis namespace: start
 #' @import pedtools
-#'
-#' @name verbalisr
+## usethis namespace: end
 NULL
