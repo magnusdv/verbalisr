@@ -1,17 +1,26 @@
+# verbalisr 0.5.1
+
+* Fix CRAN complaint regarding package doc.
+
+* Added CITATION file.
+
+* Require **pedtools** 2.2.0 and **ribd** 1.5.0
+
+
 # verbalisr 0.5.0
 
 This is a maintenance release with only minor changes.
 
-* In README, link to BMC Bioinformatics paper about QuickPed, which describes the **verbalisr** algorithm.
-
 * Tweak the description of double asymmetric relationships.
+
+* In README, link to QuickPed paper describing the **verbalisr** algorithm.
 
 
 # verbalisr 0.4.0
 
-* This version requires **pedtools 1.1.0** and **ribd 1.3.1**.
+* This version requires **pedtools** 1.1.0 and **ribd** 1.3.1.
 
-* The paths are now sorted more sensibly than before.
+* The pedigree paths are now sorted more sensibly than before.
 
 * New dataset `habsburg` showing the royal Habsburg family.
 
