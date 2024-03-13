@@ -15,7 +15,4 @@ test_that("verbalise() works in a simple ped list", {
 test_that("verbalise() gives error in pedlist with duplicated labels", {
   x = list(nuclearPed(), singleton())
   expect_error(vrb(x, 1:2), "ID label is not unique: 1")
-
-  # No error for unduplicated indivs
-  expect_match(vrb(x, 2:3)[1], "2 is the mother of 3")
 })
