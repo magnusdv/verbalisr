@@ -1,3 +1,8 @@
+# verbalisr 0.5.2
+
+* Minor code updates; no user-visible changes
+
+
 # verbalisr 0.5.1
 
 * Fix CRAN complaint regarding package doc.
