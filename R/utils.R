@@ -6,10 +6,7 @@ stop2 = function(...) {
 }
 
 checkIds = function(x, ids, checkDups = TRUE, exactly = NULL, atleast = NULL, atmost = NULL) {
-  if(is.character(x))
-    labs = x
-  else
-    labs = unlist(labels(x), use.names = FALSE)
+  labs = if(is.character(x)) x else unlist(labels(x), use.names = FALSE)
 
   if(!all(ids %in% labs))
     stop2("Unknown ID label: ", setdiff(ids, labs))
