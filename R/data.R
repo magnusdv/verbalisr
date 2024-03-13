@@ -9,7 +9,7 @@
 #'
 #' @examples
 #'
-#' plot(habsburg, hatched = "Charles II", cex = 0.7, margin = c(1,1,1,1))
+#' plot(habsburg, hatched = "Charles II", cex = 0.7)
 #'
 #' verbalise(habsburg, ids = parents(habsburg, "Charles II"))
 #'
