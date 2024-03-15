@@ -41,17 +41,26 @@ verbalise = function(x, ids = leaves(x)) {
   ids = as.character(ids)
   checkIds(x, ids, exactly = 2)
 
+  if(is.pedList(x)) {
+    cmps = getComponent(x, ids, checkUnique = FALSE, errorIfUnknown = TRUE)
+
+    # If from different components: Unrelated
+    if(cmps[1] != cmps[2])
+      return(unrelatedPair(x, ids))
+
+    # Otherwise: zoom in to component
+    x = x[[cmps[1]]]
+  }
+
+  ### By now, connected ped
+
   kinmat = kinship(x)
   phi = kinmat[ids[1], ids[2]]
   inb = 2 * diag(kinmat) - 1
 
-  ### Unrelated: Return early
+  # If unrelated: Return early
   if(phi == 0)
     return(unrelatedPair(x, ids))
-
-  # By now, if ped list, ids are from the same comp!
-  if(is.pedList(x))
-    x = x[[getComponent(x, ids[1])]]
 
   id1 = ids[1]; id2 = ids[2]
   SEX = getSex(x, named = TRUE)
