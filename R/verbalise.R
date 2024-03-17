@@ -1,13 +1,18 @@
 #' Describe a pairwise relationship
 #'
 #' The description includes all pedigree paths between the two individuals,
-#' indicating with brackets the topmost common ancestors in each path.
+#' indicating with brackets the topmost common ancestors in each path. See
+#' [print.pairrel()] for formatting options when printing the results.
 #'
 #' @param x A `ped` object, or a list of such.
 #' @param ids A vector containing the names of two pedigree members.
 #'
 #' @return An object of class `pairrel`. This is essentially a list of lists,
-#'   where each inner list describes a single path.
+#'   containing many details about each path between the individuals. Most users
+#'   will not interact with this list directly, but simply use the description
+#'   provided by the `print()` method.
+#'
+#' @seealso [print.pairrel()].
 #'
 #' @examples
 #'
@@ -17,6 +22,9 @@
 #' verbalise(x, 1:2)
 #' verbalise(x, 2:3)
 #' verbalise(x, 3:4)
+#'
+#' # Simplified output
+#' verbalise(x, 2:3) |> print(simplify = TRUE)
 #'
 #' # Example 2: Complicated cousin pedigree
 #'
@@ -29,6 +37,7 @@
 #' z = fullSibMating(1)
 #' verbalise(z)
 #' verbalise(z, ids = c(1,5))
+#' verbalise(z, ids = c(1,5)) |> print(simplify = TRUE)
 #'
 #' # Example 4: Quad half first cousins
 #'

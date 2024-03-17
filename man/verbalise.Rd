@@ -13,11 +13,14 @@ verbalise(x, ids = leaves(x))
 }
 \value{
 An object of class \code{pairrel}. This is essentially a list of lists,
-where each inner list describes a single path.
+containing many details about each path between the individuals. Most users
+will not interact with this list directly, but simply use the description
+provided by the \code{print()} method.
 }
 \description{
 The description includes all pedigree paths between the two individuals,
-indicating with brackets the topmost common ancestors in each path.
+indicating with brackets the topmost common ancestors in each path. See
+\code{\link[=print.pairrel]{print.pairrel()}} for formatting options when printing the results.
 }
 \examples{
 
@@ -27,6 +30,9 @@ x = nuclearPed(2)
 verbalise(x, 1:2)
 verbalise(x, 2:3)
 verbalise(x, 3:4)
+
+# Simplified output
+verbalise(x, 2:3) |> print(simplify = TRUE)
 
 # Example 2: Complicated cousin pedigree
 
@@ -39,10 +45,14 @@ verbalise(y)
 z = fullSibMating(1)
 verbalise(z)
 verbalise(z, ids = c(1,5))
+verbalise(z, ids = c(1,5)) |> print(simplify = TRUE)
 
 # Example 4: Quad half first cousins
 
 w = quadHalfFirstCousins()
 verbalise(w)
 
+}
+\seealso{
+\code{\link[=print.pairrel]{print.pairrel()}}.
 }

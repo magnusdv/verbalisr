@@ -6,7 +6,7 @@
 \alias{verbalisr-package}
 \title{verbalisr: Describe Pedigree Relationships in Words}
 \description{
-Describe in words the genealogical relationship between two members of a given pedigree. 'verbalisr' is part of the 'ped suite' collection of packages for pedigree analysis. For a demonstration of 'verbalisr', see the online app 'QuickPed' at \url{https://magnusdv.shinyapps.io/quickped}.
+Describe in words the genealogical relationship between two members of a given pedigree, using the algorithm in Vigeland (2022) \doi{10.1186/s12859-022-04759-y}. 'verbalisr' is part of the 'pedsuite' collection of packages for pedigree analysis. For a demonstration of 'verbalisr', see the online app 'QuickPed' at \url{https://magnusdv.shinyapps.io/quickped}.
 }
 \seealso{
 Useful links:
