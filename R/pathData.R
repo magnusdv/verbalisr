@@ -60,7 +60,7 @@ pathData = function(x, p1, p2, inb = NULL) {
   top = if(l1 < l2) leaves[1] else leaves[2]
   bottom = setdiff(leaves, top)
 
-  details = NULL
+  details = details2 = NULL
   # Relationship descriptions
   switch(type,
          lineal = {
@@ -68,11 +68,16 @@ pathData = function(x, p1, p2, inb = NULL) {
            rel = paste("lineal of degree", degree)
 
            # details
-           typ = switch(sex[top], "father", "mother")
-           if(ng > 0)
-             typ = paste0(strrep("great-", ng - 1), "grand", typ)
+           topDetail = switch(sex[top]+1, "parent", "father", "mother")
+           botDetail = switch(sex[bottom]+1, "child", "son", "daughter")
+           if(ng > 0) {
+             greats = paste0(strrep("great-", ng - 1), "grand")
+             topDetail = paste0(greats, topDetail)
+             botDetail = paste0(greats, botDetail)
+           }
            determ = if(ng > 0) "a" else "the"
-           details = sprintf("%s is %s %s of %s", top, determ, typ, bottom)
+           details = sprintf("%s is %s %s of %s", top, determ, topDetail, bottom)
+           details2 = paste(topDetail, botDetail, sep = if(ng > 1) "--" else "-")
          },
          sibling = {
            code = if(half) "hs" else "fs"
@@ -85,14 +90,20 @@ pathData = function(x, p1, p2, inb = NULL) {
                         if(ng > 0) "grand-",
                         "avuncular")
            # details
-           typ = switch(sex[top], "uncle", "aunt")
-           if(ng > 0)
-             typ = paste0(strrep("great-", ng - 1), "grand", typ)
-           if(half)
-             typ = paste0("half-", typ)
-           determ = if(substr(typ, 1, 1) %in% c("a", "u")) "an" else "a"
-           details = sprintf("%s is %s %s of %s", top, determ, typ, bottom)
-
+           topDetail = switch(sex[top]+1, "uncle", "uncle", "aunt")
+           botDetail = switch(sex[bottom]+1, "nephew", "newphew", "niece")
+           if(ng > 0) {
+             greats = paste0(strrep("great-", ng - 1), "grand")
+             topDetail = paste0(greats, topDetail)
+             botDetail = paste0(greats, botDetail)
+           }
+           if(half) {
+             topDetail = paste0("half-", topDetail)
+             botDetail = paste0("half-", botDetail)
+           }
+           determ = if(substr(topDetail, 1, 1) %in% c("a", "u")) "an" else "a"
+           details = sprintf("%s is %s %s of %s", top, determ, topDetail, bottom)
+           details2 = paste(topDetail, botDetail, sep = if(half || ng > 1) "--" else "-")
          },
          cousin = {
            cousDeg = min(l1, l2) - 1
@@ -108,9 +119,9 @@ pathData = function(x, p1, p2, inb = NULL) {
   path = paste0(c(rev(v1), ancBrack, v2), collapse = "-")
 
   list(v1 = v1, v2 = v2, leaves = leaves, anc = anc, full = full,
-       nSteps = nSteps, degree = degree, removal = removal,
-       ancInb = ancInb, sex = sex, sexPath = sexPath, path = path,
-               code = code, type = type, rel = rel, details = details)
+       nSteps = nSteps, degree = degree, removal = removal, ancInb = ancInb,
+       sex = sex, sexPath = sexPath, path = path, code = code, type = type,
+       rel = rel, details = details, details2 = details2)
 }
 
 unrelatedPair = function(x, ids) {
@@ -118,6 +129,7 @@ unrelatedPair = function(x, ids) {
   emptypath = list(v1 = ids[1], v2 = ids[2], leaves = ids, anc = character(0), full = NA,
                    nSteps = c(Inf, Inf), degree = Inf, removal = 0,
                    ancInb = 0, sex = sex, sexPath = "", path = "",
-                   code = "un", type = "unrelated", rel = "unrelated", details = NULL)
+                   code = "un", type = "unrelated", rel = "unrelated",
+                   details = NULL, details2 = NULL)
   structure(list(emptypath), class = "pairrel")
 }
