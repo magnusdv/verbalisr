@@ -91,7 +91,7 @@ pathData = function(x, p1, p2, inb = NULL) {
                         "avuncular")
            # details
            topDetail = switch(sex[top]+1, "uncle", "uncle", "aunt")
-           botDetail = switch(sex[bottom]+1, "nephew", "newphew", "niece")
+           botDetail = switch(sex[bottom]+1, "nephew", "nephew", "niece")
            if(ng > 0) {
              greats = paste0(strrep("great-", ng - 1), "grand")
              topDetail = paste0(greats, topDetail)

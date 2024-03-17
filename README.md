@@ -26,8 +26,8 @@ The algorithm behind **verbalisr** is described in detail in this paper:
 relatedness](https://doi.org/10.1186/s12859-022-04759-y) (Vigeland, BMC
 Bioinformatics, 2022).
 
-The **verbalisr** package is part of the [ped
-suite](https://magnusdv.github.io/pedsuite/) framework for pedigree
+The **verbalisr** package is part of the
+[pedsuite](https://magnusdv.github.io/pedsuite/) framework for pedigree
 analysis in R.
 
 ## Installation

@@ -10,7 +10,8 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%",
-  fig.align = "center"
+  fig.align = "center",
+  dpi = 300
 )
 ```
 
@@ -28,7 +29,7 @@ To see **verbalisr** in action, check out the interactive app **QuickPed** for b
 
 The algorithm behind **verbalisr** is described in detail in this paper: [QuickPed: an online tool for drawing pedigrees and analysing relatedness](https://doi.org/10.1186/s12859-022-04759-y) (Vigeland, BMC Bioinformatics, 2022).
 
-The **verbalisr** package is part of the [ped suite](https://magnusdv.github.io/pedsuite/) framework for pedigree analysis in R. 
+The **verbalisr** package is part of the [pedsuite](https://magnusdv.github.io/pedsuite/) framework for pedigree analysis in R. 
 
 ## Installation
 
