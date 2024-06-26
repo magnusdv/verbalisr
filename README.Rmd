@@ -81,15 +81,23 @@ ribd::inbreeding(habsburg, "Charles II")
 The high inbreeding coefficient shows that the parents of Charles II were closely related. But *how* were they related? **verbalisr** gives the answer:
 
 ```{r}
-verbalise(habsburg, ids = c("Philip IV", "Mariana"))
+rel = verbalise(habsburg, ids = c("Philip IV", "Mariana"))
+rel
 ```
 
 ## Controlling the output
 The output of `verbalise()` is actually a detailed list containing various data about each pedigree path. When the output is printed to the screen, however, a special `print` method is called, which formats the data into reader-friendly statements.
 
-The print method accepts two arguments, `cap` and `includePaths`, which can be used to control the output. Setting `cap` to FALSE results in all-lowercase output, instead of the default first-letter capitalisation. If `includePaths` is set to FALSE, the detailed paths are skipped:
-```{r}
-v = verbalise(habsburg, ids = c("Philip IV", "Mariana"))
+The print method accepts various arguments for controlling the output, including `simplify`, `includePaths` and `cap`. For example, setting `cap` to FALSE results in all-lowercase output, instead of the default first-letter capitalisation. If `simplify` is TRUE, a simplified description is printed. By default, this also removes the path details, but this may be overridden by the `includePaths` argument. 
 
-print(v, cap = FALSE, includePaths = FALSE)
+Here is a simplified description of Charles II's parents:
+```{r}
+print(rel, simplify = TRUE)
 ```
+
+If you want the output as a character vector instead of just the printout, replace `print()` with `format()`: 
+```{r, echo = -1}
+options(width = 100)
+format(rel, simplify = TRUE)
+```
+

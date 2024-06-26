@@ -1,3 +1,16 @@
+# verbalisr 0.6.0
+
+* Simplified descriptions of lineal and avuncular relationships are now available through the argument `simplify` of `format.pairrel()`. Example: `linearPed(2) |> verbalise(c(1,5)) |> print(simplify = T)`.
+
+* `verbalise()` now behaves better when the input is a list of pedigrees.
+
+* Reorganise and improve docs; update README.
+
+* Fix typo "newphew" -> "nephew".
+
+* Add rhub v2 GitHub Actions workflow.
+
+
 # verbalisr 0.5.2
 
 * Minor code updates; no user-visible changes

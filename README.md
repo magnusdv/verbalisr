@@ -113,7 +113,8 @@ were closely related. But *how* were they related? **verbalisr** gives
 the answer:
 
 ``` r
-verbalise(habsburg, ids = c("Philip IV", "Mariana"))
+rel = verbalise(habsburg, ids = c("Philip IV", "Mariana"))
+rel
 #> Avuncular: Philip IV is an uncle of Mariana
 #>    Philip IV-[Philip III,Margarita]-Maria Anna (3)-Mariana
 #> First cousins once removed
@@ -164,23 +165,36 @@ various data about each pedigree path. When the output is printed to the
 screen, however, a special `print` method is called, which formats the
 data into reader-friendly statements.
 
-The print method accepts two arguments, `cap` and `includePaths`, which
-can be used to control the output. Setting `cap` to FALSE results in
-all-lowercase output, instead of the default first-letter
-capitalisation. If `includePaths` is set to FALSE, the detailed paths
-are skipped:
+The print method accepts various arguments for controlling the output,
+including `simplify`, `includePaths` and `cap`. For example, setting
+`cap` to FALSE results in all-lowercase output, instead of the default
+first-letter capitalisation. If `simplify` is TRUE, a simplified
+description is printed. By default, this also removes the path details,
+but this may be overridden by the `includePaths` argument.
+
+Here is a simplified description of Charles II’s parents:
 
 ``` r
-v = verbalise(habsburg, ids = c("Philip IV", "Mariana"))
+print(rel, simplify = TRUE)
+#> Uncle-niece
+#> First cousins once removed
+#> Second cousins once removed
+#> Triple second cousins twice removed
+#> Triple third cousins
+#> Septuple third cousins once removed
+#> Sextuple third cousins twice removed
+#> Triple 4'th cousins
+#> Septuple 4'th cousins once removed
+```
 
-print(v, cap = FALSE, includePaths = FALSE)
-#> avuncular: Philip IV is an uncle of Mariana
-#> first cousins once removed
-#> second cousins once removed
-#> triple second cousins twice removed
-#> triple third cousins
-#> septuple third cousins once removed
-#> sextuple third cousins twice removed
-#> triple 4'th cousins
-#> septuple 4'th cousins once removed
+If you want the output as a character vector instead of just the
+printout, replace `print()` with `format()`:
+
+``` r
+format(rel, simplify = TRUE)
+#> [1] "Uncle-niece"                          "First cousins once removed"          
+#> [3] "Second cousins once removed"          "Triple second cousins twice removed" 
+#> [5] "Triple third cousins"                 "Septuple third cousins once removed" 
+#> [7] "Sextuple third cousins twice removed" "Triple 4'th cousins"                 
+#> [9] "Septuple 4'th cousins once removed"
 ```
