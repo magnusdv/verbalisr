@@ -9,6 +9,9 @@
 #'   should be capitalised. By default TRUE.
 #' @param simplify A logical. If TRUE, the descriptions of lineal and avuncular
 #'   relationships are simplified. Default: FALSE.
+#' @param abbreviate A logical. It TRUE, various abbreviations are applied to
+#'   the descriptions, e.g. 'great-great-' -> 'gg-' and 'once removed' -> '1r'.
+#'   Default: FALSE.
 #' @param includePaths A logical indicating if the complete paths should be
 #'   included in the output. By default TRUE.
 #'
@@ -21,8 +24,8 @@ print.pairrel = function(x, ...) {
 
 #' @rdname print.pairrel
 #' @export
-format.pairrel = function(x, cap = TRUE, simplify = FALSE,
                           includePaths = !simplify, ...) {
+format.pairrel = function(x, cap = TRUE, simplify = FALSE, abbreviate = FALSE,
 
   if(length(x) == 1 && x[[1]]$type == "unrelated")
     return(if(cap) "Unrelated" else "unrelated")
@@ -40,6 +43,17 @@ format.pairrel = function(x, cap = TRUE, simplify = FALSE,
     sapply(x[descrips == dsc], function(p) p$path))
 
   s = doublify(uniq, n = lengths(paths))
+
+  if(abbreviate) {
+    # Order is important!
+    patts = c("great-" = "g", ggrand = "g-grand", #half = "h",
+              double = "dbl", quadruple = "quad", quintuple = "quin", uple = "",
+              once = "1", twice = "2", " times" = "", " removed" = "r",
+              first = "1st", second = "2nd", third = "3rd", "'th" = "th")
+
+    for(i in seq_along(patts))
+      s = gsub(names(patts)[i], patts[i], s, fixed = TRUE)
+  }
   if(cap)
     s = capit(s)
 
