@@ -12,6 +12,9 @@
 #' @param abbreviate A logical. It TRUE, various abbreviations are applied to
 #'   the descriptions, e.g. 'great-great-' -> 'gg-' and 'once removed' -> '1r'.
 #'   Default: FALSE.
+#' @param collapse A single string, or NULL. If given, and the relationship has
+#'   multiple descriptions, these are concatenated with `paste(..., collapse =
+#'   collapse)`.
 #' @param includePaths A logical indicating if the complete paths should be
 #'   included in the output. By default TRUE.
 #'
@@ -24,8 +27,8 @@ print.pairrel = function(x, ...) {
 
 #' @rdname print.pairrel
 #' @export
-                          includePaths = !simplify, ...) {
 format.pairrel = function(x, cap = TRUE, simplify = FALSE, abbreviate = FALSE,
+                          collapse = NULL, includePaths = !simplify, ...) {
 
   if(length(x) == 1 && x[[1]]$type == "unrelated")
     return(if(cap) "Unrelated" else "unrelated")
@@ -54,14 +57,21 @@ format.pairrel = function(x, cap = TRUE, simplify = FALSE, abbreviate = FALSE,
     for(i in seq_along(patts))
       s = gsub(names(patts)[i], patts[i], s, fixed = TRUE)
   }
+
+  if(!is.null(collapse) && length(s) > 1) {
+    if(includePaths)
+      stop2("Cannot collapse descriptions when `includePaths` is TRUE")
+    s = paste(s, collapse = collapse)
+  }
+
   if(cap)
     s = capit(s)
 
-  names(paths) = s
-
   # Collect and print
-  if(includePaths)
+  if(includePaths) {
+    names(paths) = s
     s = unlist(lapply(s, function(r) c(r, paste("  ", paths[[r]]))))
+  }
 
   s
 }
