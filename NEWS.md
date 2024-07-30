@@ -1,3 +1,8 @@
+# verbalisr 0.7.0
+
+* New formatting arguments `abbreviate` and `collapse`.
+
+
 # verbalisr 0.6.0
 
 * Simplified descriptions of lineal and avuncular relationships are now available through the argument `simplify` of `format.pairrel()`. Example: `linearPed(2) |> verbalise(c(1,5)) |> print(simplify = T)`.
