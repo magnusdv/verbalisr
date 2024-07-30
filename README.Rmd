@@ -88,16 +88,22 @@ rel
 ## Controlling the output
 The output of `verbalise()` is actually a detailed list containing various data about each pedigree path. When the output is printed to the screen, however, a special `print` method is called, which formats the data into reader-friendly statements.
 
-The print method accepts various arguments for controlling the output, including `simplify`, `includePaths` and `cap`. For example, setting `cap` to FALSE results in all-lowercase output, instead of the default first-letter capitalisation. If `simplify` is TRUE, a simplified description is printed. By default, this also removes the path details, but this may be overridden by the `includePaths` argument. 
+The print method accepts various arguments for controlling the output, including `simplify`, `abbreviate`, `includePaths` and `cap`. For example, setting `cap` to FALSE results in all-lowercase output, instead of the default first-letter capitalisation. If `simplify` is TRUE, a simplified description is printed. By default, this also removes the path details, but this may be overridden by the `includePaths` argument. 
 
 Here is a simplified description of Charles II's parents:
 ```{r}
 print(rel, simplify = TRUE)
 ```
 
-If you want the output as a character vector instead of just the printout, replace `print()` with `format()`: 
+Even shorter descriptions are obtained by applying standard abbreviations. This leaves the most important words (such as `cousins`) intact, but shortens quantifiers like `once removed` into `1r`.
+```{r}
+print(rel, simplify = TRUE, abbreviate = TRUE)
+```
+
+
+Finally, if you want the output as a character vector instead of just the printout, replace `print()` with `format()`: 
 ```{r, echo = -1}
 options(width = 100)
-format(rel, simplify = TRUE)
+format(rel, simplify = TRUE, abbreviate = TRUE)
 ```
 

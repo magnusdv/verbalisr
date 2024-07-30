@@ -166,11 +166,11 @@ screen, however, a special `print` method is called, which formats the
 data into reader-friendly statements.
 
 The print method accepts various arguments for controlling the output,
-including `simplify`, `includePaths` and `cap`. For example, setting
-`cap` to FALSE results in all-lowercase output, instead of the default
-first-letter capitalisation. If `simplify` is TRUE, a simplified
-description is printed. By default, this also removes the path details,
-but this may be overridden by the `includePaths` argument.
+including `simplify`, `abbreviate`, `includePaths` and `cap`. For
+example, setting `cap` to FALSE results in all-lowercase output, instead
+of the default first-letter capitalisation. If `simplify` is TRUE, a
+simplified description is printed. By default, this also removes the
+path details, but this may be overridden by the `includePaths` argument.
 
 Here is a simplified description of Charles II’s parents:
 
@@ -187,14 +187,29 @@ print(rel, simplify = TRUE)
 #> Septuple 4'th cousins once removed
 ```
 
-If you want the output as a character vector instead of just the
-printout, replace `print()` with `format()`:
+Even shorter descriptions are obtained by applying standard
+abbreviations. This leaves the most important words (such as `cousins`)
+intact, but shortens quantifiers like `once removed` into `1r`.
 
 ``` r
-format(rel, simplify = TRUE)
-#> [1] "Uncle-niece"                          "First cousins once removed"          
-#> [3] "Second cousins once removed"          "Triple second cousins twice removed" 
-#> [5] "Triple third cousins"                 "Septuple third cousins once removed" 
-#> [7] "Sextuple third cousins twice removed" "Triple 4'th cousins"                 
-#> [9] "Septuple 4'th cousins once removed"
+print(rel, simplify = TRUE, abbreviate = TRUE)
+#> Uncle-niece
+#> 1st cousins 1r
+#> 2nd cousins 1r
+#> Triple 2nd cousins 2r
+#> Triple 3rd cousins
+#> Sept 3rd cousins 1r
+#> Sext 3rd cousins 2r
+#> Triple 4th cousins
+#> Sept 4th cousins 1r
+```
+
+Finally, if you want the output as a character vector instead of just
+the printout, replace `print()` with `format()`:
+
+``` r
+format(rel, simplify = TRUE, abbreviate = TRUE)
+#> [1] "Uncle-niece"           "1st cousins 1r"        "2nd cousins 1r"        "Triple 2nd cousins 2r"
+#> [5] "Triple 3rd cousins"    "Sept 3rd cousins 1r"   "Sext 3rd cousins 2r"   "Triple 4th cousins"   
+#> [9] "Sept 4th cousins 1r"
 ```
