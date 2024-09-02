@@ -1,11 +1,11 @@
-# verbalisr 0.7.0
+# verbalisr 0.7.1
 
 * New formatting arguments `abbreviate` and `collapse`.
 
 * Added lots of new tests.
 
 
-# verbalisr 0.6.0
+# verbalisr 0.6.1
 
 * New formatting argument `simplify` allows simpler descriptions of lineal and avuncular relationships.
     Example: `linearPed(2) |> verbalise(c(1,5)) |> print(simplify = T)`.
