@@ -96,10 +96,12 @@ verbalise = function(x, ids = leaves(x)) {
     a.to.id2 = allpaths[[a]][[2]]
 
     for(p1 in a.to.id1) {
+      p1_trail = p1[-1]
+
       for(p2 in a.to.id2) {
 
         # If intersection: Ignore
-        if(length(intersect(p1[-1], p2[-1])))
+        if(any(p1_trail %in% p2))
           next
 
         pd = pathData(x, p1, p2, inb = inb)
