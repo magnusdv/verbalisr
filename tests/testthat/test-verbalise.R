@@ -13,14 +13,9 @@ vrbAbbr = function(x, ids = leaves(x)) {
 
 # Test cases
 x = nuclearPed(2, sex = 1:2)
-y = cousinPed(3) |> swapSex(c(3,7,11)) |> relabel()
-z = cousinPed(3, half = TRUE) |> swapSex(c(4,8,12)) |> relabel()
+y = cousinPed(3, symmetric = TRUE)
+z = cousinPed(3, half = TRUE, symmetric = TRUE)
 # plot(list(x,y,z))
-
-# TODO: replace with the following when pedtools is updates
-#y = cousinPed(3, symmetric = T)
-#z = cousinPed(3, half = TRUE, symmetric = T)
-
 
 
 test_that("verbalise() describes basic relationships", {
