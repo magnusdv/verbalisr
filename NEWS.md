@@ -1,3 +1,8 @@
+# dev
+
+* Significantly faster handling of pedigrees with very many paths.
+
+
 # verbalisr 0.7.1
 
 * New formatting arguments `abbreviate` and `collapse`.
