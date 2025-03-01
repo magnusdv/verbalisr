@@ -27,7 +27,7 @@ relatedness](https://doi.org/10.1186/s12859-022-04759-y) (Vigeland, BMC
 Bioinformatics, 2022).
 
 The **verbalisr** package is part of the
-[pedsuite](https://magnusdv.github.io/pedsuite/) framework for pedigree
+[pedsuite](https://magnusdv.github.io/pedsuite/) ecosystem for pedigree
 analysis in R.
 
 ## Installation
