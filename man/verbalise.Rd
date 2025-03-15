@@ -4,12 +4,17 @@
 \alias{verbalise}
 \title{Describe a pairwise relationship}
 \usage{
-verbalise(x, ids = leaves(x))
+verbalise(x, ids = leaves(x), .descentPaths = NULL)
 }
 \arguments{
 \item{x}{A \code{ped} object, or a list of such.}
 
 \item{ids}{A vector containing the names of two pedigree members.}
+
+\item{.descentPaths}{(Optional) A list of descent paths, as returned by
+\code{pedtools::descentPaths(x, x$ID)}. This can be used to speed up the
+function, especially when calling it multiple times with the same (very
+large) pedigree.}
 }
 \value{
 An object of class \code{pairrel}. This is essentially a list of lists,

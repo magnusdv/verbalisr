@@ -6,6 +6,10 @@
 #'
 #' @param x A `ped` object, or a list of such.
 #' @param ids A vector containing the names of two pedigree members.
+#' @param .descentPaths (Optional) A list of descent paths, as returned by
+#'   `pedtools::descentPaths(x, x$ID)`. This can be used to speed up the
+#'   function, especially when calling it multiple times with the same (very
+#'   large) pedigree.
 #'
 #' @return An object of class `pairrel`. This is essentially a list of lists,
 #'   containing many details about each path between the individuals. Most users
@@ -46,7 +50,7 @@
 #'
 #' @importFrom ribd kinship
 #' @export
-verbalise = function(x, ids = leaves(x)) {
+verbalise = function(x, ids = leaves(x), .descentPaths = NULL) {
   ids = as.character(ids)
   checkIds(x, ids, exactly = 2)
 
@@ -78,7 +82,14 @@ verbalise = function(x, ids = leaves(x)) {
   comAnc = commonAncestors(x, ids, inclusive = TRUE)
 
   # List of lists: All paths from each common ancestor
-  descPth = descentPaths(x, comAnc)
+  if(is.null(.descentPaths))
+    descPth = descentPaths(x, comAnc)
+  else {
+    miss = setdiff(comAnc, names(.descentPaths))
+    if(length(miss) > 0)
+      stop2("Individual not included in .descentPaths: ", miss[1])
+    descPth = .descentPaths[comAnc]
+  }
 
   # Split into paths to each id
   allpaths = lapply(descPth, function(plist) {
